@@ -1,0 +1,62 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">B612</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="nav-home"><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 主页</a>
+                </li>
+                <li id="nav-article"><a href="/article"><span class="glyphicon glyphicon-book"
+                                                              aria-hidden="true"></span>文章</a></li>
+                <li id="nav-photo"><a href="/photo"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span>相册</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                    <li><a href="#" id="logout_url"><span class="glyphicon glyphicon glyphicon-log-out"
+                                                          aria-hidden="true"></span> 登出</a></li>
+                {% else %}
+                    <li><a data-toggle="modal" data-target="#login"><span class="glyphicon glyphicon-log-in"
+                                                                          aria-hidden="true"></span> 登陆 </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{#登陆#}
+<div class="modal fade" id="login" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" align="center">
+        <div class="modal-content" style="width: 50%" align="left">
+
+            <div class="modal-header">
+                <h4 class="modal-title">管理员</h4>
+            </div>
+
+
+            <form name="login_form" method="post" action="/auth/login" role="form">
+                <div class="modal-body">
+                    <span class="glyphicon glyphicon-user">账号</span>
+                    <input type="text" name="user_name" class="form-control">
+                    <span class="glyphicon glyphicon-lock">密码</span>
+                    <input type="password" name="password" class="form-control">
+                </div>
+
+                <input id="page_url" type="hidden" value="null" name="next">
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">登录</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">返回</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    $("#page_url").val(window.location.href);
+    $("#logout_url").attr("href", "/auth/logout?next=" + window.location.href);
+</script>
+

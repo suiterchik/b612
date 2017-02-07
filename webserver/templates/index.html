@@ -1,0 +1,173 @@
+{% extends 'base/layout.html' %}
+
+{% block body %}
+<body onload="fadeIn()">
+<script>
+    document.getElementById("nav-home").className = "active";
+
+    function fadeIn() {
+        $('.shadowBox').fadeIn(1000);
+    }
+
+</script>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+
+            {% if current_user.is_authenticated %}
+            <div id="txtEditor"></div>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#txtEditor").Editor();
+                });
+            </script>
+            {% endif %}
+
+            {% for note in notes %}
+            <div class="shadowBox">
+                <div align="right" style="margin-top: -5%">
+                    {% if current_user.is_authenticated %}
+                    <h2><a class="glyphicon glyphicon-bookmark" href="/delete_note?id={{ note.id }}"
+                           style="text-decoration: none"></a></h2>
+                    {% else %}
+                    <h2><span class="glyphicon glyphicon-bookmark"></span></h2>
+                    {% endif %}
+                </div>
+                <div class="span2 slide">
+                    {{ note.content | safe }}<br>
+                </div>
+                <hr>
+
+                <div class="span2">
+                    <h2 style="display: inline; margin-left: 40%">
+                        <a class="glyphicon glyphicon-chevron-down viewbutton" href="javascipt:void(0);"
+                           style="text-decoration: none"></a>
+                    </h2>
+                    <div style="display: inline; margin-left: 25%"><span class="glyphicon glyphicon-time"
+                                                                         aria-hidden="true">{{ note.create_time }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div align="center">
+                <nav>
+                    <ul class="pagination">
+                        {% if page == 1 %}
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                        {% else %}
+                        <li><a href="?page={{ page - 1 }}">&laquo;</a></li>
+                        {% endif %}
+
+                        {% for i in range(1, max_page+1) %}
+                            {% if page == i %}
+                                <li class="disabled active"><a href="#">{{ i }}</a></li>
+                            {% else %}
+                                <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page == max_page %}
+                        <li class="disabled"><a href="#">&raquo;</a></li>
+                        {% else %}
+                        <li><a href="?page={{ page + 1 }}">&raquo;</a></li>
+                        {% endif %}
+
+
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+        <div class="col-md-4" style="">
+            <div class="shadowBox">
+                <span class="glyphicon glyphicon-send" aria-hidden="true"></span> About Me
+                <hr>
+                <div align="center"><img src="../static/head.jpg" alt="..." class="img-circle" height="150px"
+                                         width="150px"><br></div>
+                <br>
+                <div class="span2">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我的那朵玫瑰，别人会以为她和你们一样，但她单独一朵就胜过你们全部。因为她是我浇灌的。因为她是我放在花罩中的。因为她是我用屏风保护起来的。因为她身上的毛毛虫是我除掉的。因为我倾听过她的哀怨，她的吹嘘，有事甚至是她的沉默。因为她是我的玫瑰。
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></div>
+            </div>
+
+            <div class="shadowBox">
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Tags
+                <hr>
+                <span class="label label-success"> 懒 </span>&nbsp;&nbsp;
+                <span class="label label-danger">巨蟹</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    var min_h = 250;
+
+    var $$ = function (func) {
+        if (document.addEventListener) {
+            window.addEventListener("load", func, false);
+        }
+        else if (document.attachEvent) {
+            window.attachEvent("onload", func);
+        }
+    };
+
+    $$(function () {
+        $(".slide").each(function () {
+            var height = $(this).css("height")
+            height = parseInt(height.substr(0, height.length - 2));
+            if (height > 250) {
+                $(this).css({height: min_h});//折叠
+                $(this).attr("maxHeight", height);
+            }
+            else {
+                $(this).parent().children(".span2").children("h2").children(".viewbutton").hide();
+            }
+        });
+    });
+
+
+    function animate_toggle_height(maxh, minh, element) {
+        var speed = 500;
+        if (element.css("height") == minh.toString().concat("px")) {
+            element.animate({
+                height: maxh
+            }, {queue: false}, speed);
+        }
+        if (element.css("height") == maxh.toString().concat("px")) {
+            $(this).html("");
+            var x = element.offset().left;
+            var y = element.offset().top;
+            window.scrollTo(x, y + 100);
+            element.animate({
+                height: minh
+            }, {queue: false}, speed);
+        }
+    }
+
+    //    $(".slide").css({height: min_h});//设置初始的高度
+    $(".viewbutton").click(function () {//这里只是调用了纵向展开，也可以调用横向展开
+        if ($(this).attr('class').indexOf('glyphicon-chevron-down') != -1) {
+            $(this).attr('class', 'glyphicon glyphicon-chevron-up viewbutton');
+        } else {
+            $(this).attr('class', 'glyphicon glyphicon-chevron-down viewbutton');
+        }
+
+        var max_h = $(this).parent().parent().parent().children(".slide").attr("maxHeight");
+
+        $(this).html(animate_toggle_height(max_h, min_h, $(this).parent().parent().parent().children(".slide"), 500));//自动识别为viewbutton的上一级进行动画
+        return false;
+    });
+</script>
+
+
+</body>
+
+{% endblock %}
+
+
+
+

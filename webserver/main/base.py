@@ -1,5 +1,5 @@
 from . import admin
-from flask import render_template, request
+from flask import render_template, request, send_file
 from webserver.model import Notes, DBSession
 import math
 
@@ -13,3 +13,8 @@ def index():
     max_page = int(math.ceil(1.0 * session.query(Notes).filter_by(status=1).count() / page_size))
     session.close()
     return render_template('index.html', notes=notes, page=page, max_page=max_page)
+
+
+@admin.route('/favicon.ico')
+def favicon():
+    return send_file('static/favicon.ico')

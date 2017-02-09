@@ -14,7 +14,6 @@ def load_user(user_id):
 
 @admin.route('/login', methods=['POST'])
 def login():
-    print 'post'
     user_name = request.form.get('user_name')
     password = request.form.get('password')
     session = DBSession()

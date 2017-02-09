@@ -3,4 +3,4 @@ from flask import Blueprint
 
 admin = Blueprint('b612', __name__)
 
-from . import base, errors, auth
+from . import base, errors, auth, note

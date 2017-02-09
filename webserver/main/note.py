@@ -13,5 +13,16 @@ def new_note():
     session = DBSession()
     session.add(note)
     session.commit()
+    session.close()
     return redirect('/')
 
+
+@admin.route('/delete_note')
+@login_required
+def delete_note():
+    session = DBSession()
+    note = session.query(Notes).filter_by(id=request.args.get('id')).first()
+    note.status = 0
+    session.commit()
+    session.close()
+    return redirect('/')

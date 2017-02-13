@@ -10,7 +10,6 @@ from datetime import datetime
 def cloud():
     filename_list = os.listdir('cloud')
     filename_list.reverse()
-    print filename_list[0].decode('gbk').encode('utf-8')
     files = [{'create_time': datetime.strptime(filename.split('@fuck_nvidia@')[0], '%Y-%m-%d %H-%M-%S').strftime('%Y-%m-%d %H:%M:%S'),
               'name': filename.split('@fuck_nvidia@')[1]}
              for filename in filename_list]

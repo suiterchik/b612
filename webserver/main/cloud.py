@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 @admin.route('/cloud')
+@login_required
 def cloud():
     filename_list = os.listdir('cloud')
     filename_list.reverse()

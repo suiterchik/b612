@@ -14,17 +14,18 @@
     </div>
 
     <section id="cd-timeline" class="cd-container">
-        {% for article in article_list %}
+        {% for file in files %}
             <div class="cd-timeline-block">
                 <div class="cd-timeline-img cd-location">
                     <img src="../static/image/cd-icon-location.svg" alt="Location">
                 </div>
 
                 <div class="cd-timeline-content">
-                    <h2>{{ article.title | safe}}</h2>
-                    <p>{{ article.abstract | safe}}</p>
-                    <a href="{{ article.url }}" class="cd-read-more" target="_parent">阅读全文</a>
-                    <span class="cd-date">{{ article.date }}</span>
+                    <h2>{{ file.name | safe}}</h2>
+{#                    <p>{{ article.abstract | safe}}</p>#}
+{#                    <a href="{{ article.url }}" class="cd-read-more" target="_parent">下载</a>#}
+                    <a href="#" class="cd-read-more" target="_parent">下载</a>
+                    <span class="cd-date">{{ file.create_time }}</span>
                 </div>
             </div>
         {% endfor %}
